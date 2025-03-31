@@ -22,6 +22,8 @@
   filter: blur(0.5rem);
 }
 
-
+html {
+  font-family: theme('fontFamily.sans');
+}
 
 </style>

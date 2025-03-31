@@ -2,7 +2,7 @@
 import tailwindcss from '@tailwindcss/vite'
 import AuthModule from './modules/auth/index'
 import MainModule from './modules/main/index'
-import SharedModule from './modules/shared/index'
+import SharedModule from './modules/shared/inex'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
