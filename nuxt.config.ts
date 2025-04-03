@@ -7,7 +7,6 @@ import SharedModule from './modules/shared/index'
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-
   alias: {
     '@shared': './modules/shared',
     '@auth': './modules/auth'
