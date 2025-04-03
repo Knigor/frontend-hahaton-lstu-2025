@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1 class="text-red-400">Дима лох</h1>
+  <h1 class="text-red-400">Главная страница</h1>
   <button class="btn btn-accent m-4">Выполнить</button>
   <label class="swap swap-rotate">
     <!-- this hidden checkbox controls the state -->
