@@ -46,6 +46,29 @@ const checkValid = async () => {
   }
 }
 
+onMounted(() => {
+  window.YaAuthSuggest.init(
+    {
+      client_id: '607b69aea9714146a984ddeaf9e303e4',
+      response_type: 'token',
+      redirect_uri: 'https://not-five.ru'
+    },
+    'https://not-five.ru',
+    {
+      view: 'button',
+      parentId: 'buttonContainerId',
+      buttonSize: 'm',
+      buttonView: 'main',
+      buttonTheme: 'light',
+      buttonBorderRadius: '16',
+      buttonIcon: 'ya'
+    }
+  )
+    .then(({ handler }) => handler())
+    .then((data) => console.log('Сообщение с токеном', data))
+    .catch((error) => console.log('Обработка ошибки', error))
+})
+
 const loginWithYandex = () => {
   console.log('Переход к авторизации через Яндекс ID')
 }
@@ -123,12 +146,13 @@ const onSubmit = async () => {
               Войти
             </button>
             <button
-              class="btn rounded-2xl border-black bg-black text-white"
+              class="btn buttonContainerId rounded-2xl border-black bg-black text-white"
               @click.prevent="loginWithYandex"
             >
               <YandexIcon filled :font-controlled="false" class="h-6 w-6" />
               Войти с Яндекс ID
             </button>
+
             <div class="text-center text-sm">
               Нет аккаунта?
               <NuxtLink to="/register">

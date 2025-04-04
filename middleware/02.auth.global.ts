@@ -8,11 +8,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (authStore.accessToken === null) {
     console.log('Вызываем refreshToken')
 
-    try {
-      await refreshToken()
-    } catch (error) {
-      console.log(error.status)
-      return navigateTo('/authorization')
+    const response = await refreshToken()
+
+    if (response.error) {
+      console.error('refreshToken error', response.error)
     }
   }
 })
