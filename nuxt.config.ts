@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import AuthModule from './modules/auth/index'
 import MainModule from './modules/main/index'
 import SharedModule from './modules/shared/index'
+import StartModule from './modules/start/index'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
@@ -22,7 +23,8 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     AuthModule,
     MainModule,
-    SharedModule
+    SharedModule,
+    StartModule,
   ],
   css: ['~/modules/shared/assets/css/main.css'],
   vite: {
@@ -36,5 +38,6 @@ export default defineNuxtConfig({
   },
   svgo: {
     autoImportPath: false
-  }
+  },
+  theme: 'light'
 })
