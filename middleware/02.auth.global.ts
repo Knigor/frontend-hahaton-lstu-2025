@@ -3,30 +3,16 @@ import { useAuth } from '~/modules/auth/composables/useAuth'
 
 export default defineNuxtRouteMiddleware(async (to) => {
   const authStore = useAuthStore()
-  const { onRefreshToken } = useAuth()
-  console.log(
-    Boolean(useCookie('refresh_token').value && to.path === '/authorization')
-  )
-  if (
-    (to.path === '/authorization' && authStore.accessToken) ||
-    Boolean(useCookie('refresh_token').value && to.path === '/authorization')
-  ) {
-    return navigateTo('/')
-  }
+  const { refreshToken } = useAuth()
 
-  if (to.path !== '/authorization' && !authStore.accessToken) {
-    console.log('абоба')
-    if (authStore.getRefreshToken) {
-      try {
-        const { success } = await onRefreshToken()
-        if (success) return
-      } catch (error) {
-        console.error(error)
-        authStore.logout()
-        return navigateTo('/authorization')
-      }
+  if (authStore.accessToken === null) {
+    console.log('Вызываем refreshToken')
+
+    try {
+      await refreshToken()
+    } catch (error) {
+      console.log(error.status)
+      return navigateTo('/authorization')
     }
-    authStore.logout()
-    // return navigateTo('/authorization')
   }
 })

@@ -1,16 +1,89 @@
 <script setup lang="ts">
-import Button from '~/modules/shared/components/common/buttons/Button.vue'
-import { Apple } from 'lucide-vue-next'
+import { object, string, ValidationError } from 'yup'
+import { ref, computed } from 'vue'
+import YandexIcon from '~/modules/shared/assets/icons/Yandex_icon_1.svg'
+
+const name = ref('')
+const nameError = ref('')
+
+const email = ref('')
+const emailError = ref('')
+
+const password = ref('')
+const passwordError = ref('')
+
+const isPending = ref(false)
+
+const isFormSubmitDisabled = computed(
+  () => !name.value.trim() || !email.value.trim() || !password.value.trim()
+)
+
+const resetErrors = () => {
+  nameError.value = ''
+  emailError.value = ''
+  passwordError.value = ''
+}
+
+const checkValid = async () => {
+  const registerSchema = object({
+    name: string().required('Необходимо указать имя'),
+    email: string()
+      .required('Необходимо указать email')
+      .email('Некорректный email'),
+    password: string()
+      .required('Необходимо указать пароль')
+      .min(6, 'Пароль должен содержать минимум 6 символов')
+  })
+  try {
+    await registerSchema.validate({
+      name: name.value,
+      email: email.value,
+      password: password.value
+    })
+    return true
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      if (err.path === 'name') nameError.value = err.message
+      if (err.path === 'email') emailError.value = err.message
+      if (err.path === 'password') passwordError.value = err.message
+    }
+    return false
+  }
+}
+
+const onSubmit = async () => {
+  const isValid = await checkValid()
+  if (!isValid) return
+  resetErrors()
+  isPending.value = true
+  try {
+    setTimeout(() => {
+      isPending.value = false
+      console.log('Регистрация успешна:', {
+        name: name.value,
+        email: email.value,
+        password: password.value
+      })
+    }, 2000)
+  } catch (err) {
+    console.error('Ошибка при регистрации:', err)
+  }
+}
+
+const loginWithYandex = () => {
+  console.log('Переход к авторизации через Яндекс ID')
+  // Здесь можно добавить редирект на страницу авторизации Яндекса
+}
 </script>
 
 <template>
   <div class="flex flex-col gap-6">
     <div class="overflow-hidden p-0">
       <div class="grid p-0 md:grid-cols-2">
-        <form class="p-6 md:p-8">
+        <form class="p-6 md:p-8" @submit.prevent="onSubmit">
           <div class="flex flex-col gap-6">
             <div class="flex flex-col items-center text-center">
-              <h1 class="text-2xl font-bold">Зарегистрироваться</h1>
+              <h1 class="text-2xl font-bold">Регистрация</h1>
               <p class="text-start text-gray-600">
                 Заполните все поля для регистрации
               </p>
@@ -19,76 +92,102 @@ import { Apple } from 'lucide-vue-next'
               <label class="floating-label">
                 <span>Имя</span>
                 <input
+                  v-model="name"
                   type="text"
                   placeholder="Введите ваше имя"
                   class="input input-primary rounded-2xl border-2"
+                  @input="resetErrors"
                 />
+                <p v-if="nameError" class="text-sm text-red-500">
+                  {{ nameError }}
+                </p>
               </label>
             </div>
             <div class="grid gap-3">
               <label class="floating-label">
                 <span>Email</span>
                 <input
+                  v-model="email"
                   type="text"
                   placeholder="Введите ваш email"
                   class="input input-primary rounded-2xl border-2"
+                  @input="resetErrors"
                 />
+                <p v-if="emailError" class="text-sm text-red-500">
+                  {{ emailError }}
+                </p>
               </label>
             </div>
             <div class="grid gap-3">
               <label class="floating-label">
                 <span>Пароль</span>
                 <input
+                  v-model="password"
                   type="password"
-                  placeholder="введите ваш пароль"
+                  placeholder="Введите ваш пароль"
                   class="input input-primary rounded-2xl border-2"
+                  @input="resetErrors"
                 />
+                <p v-if="passwordError" class="text-sm text-red-500">
+                  {{ passwordError }}
+                </p>
               </label>
             </div>
-            <button class="btn btn-primary w-full rounded-2xl">
-              Зарегестрироваться
+            <div
+              v-if="isPending"
+              class="relative h-2 w-full overflow-hidden rounded-lg bg-gray-100"
+            >
+              <div
+                class="inner-bar absolute top-0 left-0 h-full w-1/4 rounded-lg bg-blue-600"
+              ></div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary w-full rounded-2xl"
+              :disabled="isFormSubmitDisabled"
+            >
+              Зарегистрироваться
             </button>
-            <button class="btn rounded-2xl border-black bg-black text-white">
-              <svg
-                aria-label="Email icon"
-                width="16"
-                height="16"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <g
-                  stroke-linejoin="round"
-                  stroke-linecap="round"
-                  stroke-width="2"
-                  fill="none"
-                  stroke="black"
-                >
-                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                </g>
-              </svg>
-              <Apple stroke-width="4" color="#ff0000" fill="#fff" />
+            <button
+              class="btn rounded-2xl border-black bg-black text-white"
+              @click.prevent="loginWithYandex"
+            >
+              <YandexIcon filled :font-controlled="false" class="h-6 w-6" />
               Войти с Яндекс ID
             </button>
             <div class="text-center text-sm">
-              Нет аккаунта?
+              Уже есть аккаунт?
               <NuxtLink to="/authorization">
                 <button class="btn btn-link m-0 p-0 hover:text-blue-400">
                   Войти
-                </button></NuxtLink
-              >
+                </button>
+              </NuxtLink>
             </div>
           </div>
         </form>
-
-        <div class="relative hidden md:block">
+        <div class="relative hidden overflow-hidden md:block">
           <img
-            src="/modules/shared/assets/icons/Tralalero_Tralala.png"
+            src="/modules/shared/assets/icons/auth_png.png"
             alt="Image"
-            class="absolute inset-0 h-full w-full rounded-r-2xl object-cover dark:brightness-[0.2] dark:grayscale"
+            class="absolute inset-0 h-full w-full object-cover object-center"
           />
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style lang="css" scoped>
+@keyframes slide {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.inner-bar {
+  animation: slide 2s linear infinite;
+}
+</style>
