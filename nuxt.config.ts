@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import AuthModule from './modules/auth/index'
 import MainModule from './modules/main/index'
 import SharedModule from './modules/shared/index'
+import StartModule from './modules/start/index'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
@@ -22,7 +23,8 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     AuthModule,
     MainModule,
-    SharedModule
+    SharedModule,
+    StartModule
   ],
   css: ['~/modules/shared/assets/css/main.css'],
   vite: {
@@ -46,7 +48,14 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'format-detection', content: 'telephone=no' }
       ],
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+      script: [
+        {
+          src: 'https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js',
+          defer: true
+        }
+      ]
     }
-  }
+  },
+  theme: 'light'
 })
