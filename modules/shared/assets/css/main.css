@@ -1,13 +1,8 @@
 @import './fonts.css';
 
-@custom-variant dark (&:is(.dark *));
+
 @import 'tailwindcss';
-@plugin "daisyui" {
-  themes:
-    light --default,
-    dark --prefersdark,
-    cupcake;
-}
+@plugin "daisyui";
 
 @theme {
   --font-display: 'Inter', sans-serif;

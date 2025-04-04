@@ -11,6 +11,9 @@ export default defineNuxtConfig({
     '@shared': './modules/shared',
     '@auth': './modules/auth'
   },
+  dir:{
+    layouts: "./modules/shared/layouts"
+  },
   modules: [
     '@pinia/nuxt',
     'nuxt-svgo',
