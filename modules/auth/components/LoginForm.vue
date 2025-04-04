@@ -145,14 +145,8 @@ const onSubmit = async () => {
             >
               Войти
             </button>
-            <button
-              class="btn buttonContainerId rounded-2xl border-black bg-black text-white"
-              @click.prevent="loginWithYandex"
-            >
-              <YandexIcon filled :font-controlled="false" class="h-6 w-6" />
-              Войти с Яндекс ID
-            </button>
-
+            <!-- Кнопка яндекса -->
+            <div id="buttonContainerId" class="flex justify-center"></div>
             <div class="text-center text-sm">
               Нет аккаунта?
               <NuxtLink to="/register">
