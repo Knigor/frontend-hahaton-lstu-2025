@@ -68,7 +68,7 @@ onMounted(() => {
 })
 
 const loginWithYandex = () => {
-  console.log('Переход к авторизации через Яндекс ID')
+  window.location.href = 'https://not-five.ru/api/auth/yandex/login'
 }
 
 const onSubmit = async () => {
@@ -78,6 +78,7 @@ const onSubmit = async () => {
   isPending.value = true
   try {
     await onLogin(email.value, password.value)
+    navigateTo('/')
   } catch (err) {
     console.error('Ошибка при отправке формы:', err)
   } finally {
@@ -145,6 +146,12 @@ const onSubmit = async () => {
             </button>
             <!-- Кнопка яндекса -->
             <div id="buttonContainerId" class="flex justify-center"></div>
+            <button
+              class="btn btn-primary w-full rounded-2xl"
+              @click="loginWithYandex"
+            >
+              Яндекс
+            </button>
             <div class="text-center text-sm">
               Нет аккаунта?
               <NuxtLink to="/register">

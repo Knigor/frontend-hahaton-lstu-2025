@@ -22,6 +22,8 @@ export const useAuth = () => {
   const refreshToken = async () => {
     try {
       const { token: access_token } = await $publicApi('auth/refresh_token')
+
+      console.log(access_token)
       authStore.setAccessToken(access_token)
 
       return { success: true }
