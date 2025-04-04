@@ -1,5 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+    plugins: [require("daisyui")],
+    daisyui: {
+        themes: ["light"], // Только светлая тема (без переключения)
+    },
     content: [
         './modules/**/*.{js,vue,ts}',
         './components/**/*.{js,vue,ts}',
@@ -27,5 +31,6 @@ export default {
             current: 'currentColor',
             black: '#000000'
         }
-    }
+    },
+    themes: ["light"],
 }

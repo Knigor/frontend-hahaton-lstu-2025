@@ -7,8 +7,7 @@ const isOpen = ref<Boolean>(false)
 </script>
 
 <template>
-  <button @click="isOpen = true" class="btn btn-primary">Указать данные</button>
-  <ModalStart v-model="isOpen" />
+
 </template>
 
 <style scoped></style>
