@@ -21,7 +21,7 @@ import { Apple } from 'lucide-vue-next'
                 <input
                   type="text"
                   placeholder="Введите ваше имя"
-                  class="input input-primary border"
+                  class="input input-primary rounded-2xl border-2"
                 />
               </label>
             </div>
@@ -31,7 +31,7 @@ import { Apple } from 'lucide-vue-next'
                 <input
                   type="text"
                   placeholder="Введите ваш email"
-                  class="input input-primary border"
+                  class="input input-primary rounded-2xl border-2"
                 />
               </label>
             </div>
@@ -41,12 +41,14 @@ import { Apple } from 'lucide-vue-next'
                 <input
                   type="password"
                   placeholder="введите ваш пароль"
-                  class="input input-primary border"
+                  class="input input-primary rounded-2xl border-2"
                 />
               </label>
             </div>
-            <Button type="submit" />
-            <button class="btn border-black bg-black text-white">
+            <button class="btn btn-primary w-full rounded-2xl">
+              Зарегестрироваться
+            </button>
+            <button class="btn rounded-2xl border-black bg-black text-white">
               <svg
                 aria-label="Email icon"
                 width="16"
