@@ -2,8 +2,6 @@
 import { object, string, ValidationError } from 'yup'
 import { useAuth } from '../composables/useAuth'
 
-import YandexIcon from '~/modules/shared/assets/icons/Yandex_icon_1.svg'
-
 const { onLogin } = useAuth()
 const email = ref('')
 const emailError = ref('')
@@ -51,7 +49,7 @@ onMounted(() => {
     {
       client_id: '607b69aea9714146a984ddeaf9e303e4',
       response_type: 'token',
-      redirect_uri: 'https://not-five.ru'
+      redirect_uri: 'https://not-five.ru/api/auth/yandex/callback'
     },
     'https://not-five.ru',
     {
@@ -159,7 +157,7 @@ const onSubmit = async () => {
         </form>
         <div class="relative hidden overflow-hidden md:block">
           <img
-            src="/modules/shared/assets/icons/woman.png"
+            src="/modules/shared/assets/icons/auth/guts.jpg"
             alt="Image"
             class="absolute inset-0 h-full w-full object-cover object-center"
           />
@@ -177,6 +175,10 @@ const onSubmit = async () => {
   100% {
     left: 100%;
   }
+}
+
+.yaPreloadingSuggestBlockContainer {
+  height: 0px;
 }
 
 .inner-bar {
