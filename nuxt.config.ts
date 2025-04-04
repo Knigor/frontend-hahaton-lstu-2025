@@ -11,6 +11,9 @@ export default defineNuxtConfig({
     '@shared': './modules/shared',
     '@auth': './modules/auth'
   },
+  dir: {
+    layouts: './modules/shared/layouts'
+  },
   modules: [
     '@pinia/nuxt',
     'nuxt-svgo',
@@ -33,5 +36,17 @@ export default defineNuxtConfig({
   },
   svgo: {
     autoImportPath: false
+  },
+
+  app: {
+    head: {
+      title: 'Sportix Vibe',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'format-detection', content: 'telephone=no' }
+      ],
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    }
   }
 })

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { object, string, ValidationError } from 'yup'
-import { useAuth } from '../composables/useAuth'
-
+import { ref, computed } from 'vue'
 import YandexIcon from '~/modules/shared/assets/icons/Yandex_icon_1.svg'
 
-const { onLogin } = useAuth()
+const name = ref('')
+const nameError = ref('')
+
 const email = ref('')
 const emailError = ref('')
 
@@ -14,16 +15,18 @@ const passwordError = ref('')
 const isPending = ref(false)
 
 const isFormSubmitDisabled = computed(
-  () => !email.value.trim() || !password.value.trim()
+  () => !name.value.trim() || !email.value.trim() || !password.value.trim()
 )
 
 const resetErrors = () => {
+  nameError.value = ''
   emailError.value = ''
   passwordError.value = ''
 }
 
 const checkValid = async () => {
-  const loginSchema = object({
+  const registerSchema = object({
+    name: string().required('Необходимо указать имя'),
     email: string()
       .required('Необходимо указать email')
       .email('Некорректный email'),
@@ -32,22 +35,20 @@ const checkValid = async () => {
       .min(6, 'Пароль должен содержать минимум 6 символов')
   })
   try {
-    await loginSchema.validate({
+    await registerSchema.validate({
+      name: name.value,
       email: email.value,
       password: password.value
     })
     return true
   } catch (err) {
     if (err instanceof ValidationError) {
+      if (err.path === 'name') nameError.value = err.message
       if (err.path === 'email') emailError.value = err.message
       if (err.path === 'password') passwordError.value = err.message
     }
     return false
   }
-}
-
-const loginWithYandex = () => {
-  console.log('Переход к авторизации через Яндекс ID')
 }
 
 const onSubmit = async () => {
@@ -56,12 +57,22 @@ const onSubmit = async () => {
   resetErrors()
   isPending.value = true
   try {
-    await onLogin(email.value, password.value)
+    setTimeout(() => {
+      isPending.value = false
+      console.log('Регистрация успешна:', {
+        name: name.value,
+        email: email.value,
+        password: password.value
+      })
+    }, 2000)
   } catch (err) {
-    console.error('Ошибка при отправке формы:', err)
-  } finally {
-    isPending.value = false
+    console.error('Ошибка при регистрации:', err)
   }
+}
+
+const loginWithYandex = () => {
+  console.log('Переход к авторизации через Яндекс ID')
+  // Здесь можно добавить редирект на страницу авторизации Яндекса
 }
 </script>
 
@@ -72,22 +83,37 @@ const onSubmit = async () => {
         <form class="p-6 md:p-8" @submit.prevent="onSubmit">
           <div class="flex flex-col gap-6">
             <div class="flex flex-col items-center text-center">
-              <h1 class="text-2xl font-bold">Добро пожаловать</h1>
+              <h1 class="text-2xl font-bold">Регистрация</h1>
               <p class="text-start text-gray-600">
-                Введите ваш email чтобы войти
+                Заполните все поля для регистрации
               </p>
+            </div>
+            <div class="grid gap-3">
+              <label class="floating-label">
+                <span>Имя</span>
+                <input
+                  v-model="name"
+                  type="text"
+                  placeholder="Введите ваше имя"
+                  class="input input-primary rounded-2xl border-2"
+                  @input="resetErrors"
+                />
+                <p v-if="nameError" class="text-sm text-red-500">
+                  {{ nameError }}
+                </p>
+              </label>
             </div>
             <div class="grid gap-3">
               <label class="floating-label">
                 <span>Email</span>
                 <input
                   v-model="email"
-                  type="email"
-                  placeholder="email"
+                  type="text"
+                  placeholder="Введите ваш email"
                   class="input input-primary rounded-2xl border-2"
                   @input="resetErrors"
                 />
-                <p v-if="emailError" class="mt-1 text-sm text-red-500">
+                <p v-if="emailError" class="text-sm text-red-500">
                   {{ emailError }}
                 </p>
               </label>
@@ -98,9 +124,9 @@ const onSubmit = async () => {
                 <input
                   v-model="password"
                   type="password"
-                  placeholder="введите ваш пароль"
+                  placeholder="Введите ваш пароль"
                   class="input input-primary rounded-2xl border-2"
-                  @input="passwordError = ''"
+                  @input="resetErrors"
                 />
                 <p v-if="passwordError" class="text-sm text-red-500">
                   {{ passwordError }}
@@ -120,7 +146,7 @@ const onSubmit = async () => {
               class="btn btn-primary w-full rounded-2xl"
               :disabled="isFormSubmitDisabled"
             >
-              Войти
+              Зарегистрироваться
             </button>
             <button
               class="btn rounded-2xl border-black bg-black text-white"
@@ -130,10 +156,10 @@ const onSubmit = async () => {
               Войти с Яндекс ID
             </button>
             <div class="text-center text-sm">
-              Нет аккаунта?
-              <NuxtLink to="/register">
+              Уже есть аккаунт?
+              <NuxtLink to="/authorization">
                 <button class="btn btn-link m-0 p-0 hover:text-blue-400">
-                  Зарегистрироваться
+                  Войти
                 </button>
               </NuxtLink>
             </div>
@@ -141,7 +167,7 @@ const onSubmit = async () => {
         </form>
         <div class="relative hidden overflow-hidden md:block">
           <img
-            src="/modules/shared/assets/icons/woman.png"
+            src="/modules/shared/assets/icons/auth_png.png"
             alt="Image"
             class="absolute inset-0 h-full w-full object-cover object-center"
           />
