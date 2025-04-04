@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { object, string, ValidationError } from 'yup'
-import { Apple } from 'lucide-vue-next'
+import { useAuth } from '../composables/useAuth'
 
+import YandexIcon from '~/modules/shared/assets/icons/Yandex_icon_1.svg'
+
+const { onLogin } = useAuth()
 const email = ref('')
 const emailError = ref('')
 
@@ -43,23 +46,21 @@ const checkValid = async () => {
   }
 }
 
+const loginWithYandex = () => {
+  console.log('Переход к авторизации через Яндекс ID')
+}
+
 const onSubmit = async () => {
   const isValid = await checkValid()
   if (!isValid) return
   resetErrors()
   isPending.value = true
   try {
-    setTimeout(() => {
-      isPending.value = false
-      console.log('Форма успешно отправлена:', {
-        email: email.value,
-        password: password.value
-      })
-    }, 2000)
+    await onLogin(email.value, password.value)
   } catch (err) {
     console.error('Ошибка при отправке формы:', err)
   } finally {
-    // isPending.value = false
+    isPending.value = false
   }
 }
 </script>
@@ -121,8 +122,11 @@ const onSubmit = async () => {
             >
               Войти
             </button>
-            <button class="btn rounded-2xl border-black bg-black text-white">
-              <Apple stroke-width="4" color="#ff0000" fill="#fff" />
+            <button
+              class="btn rounded-2xl border-black bg-black text-white"
+              @click.prevent="loginWithYandex"
+            >
+              <YandexIcon filled :font-controlled="false" class="h-6 w-6" />
               Войти с Яндекс ID
             </button>
             <div class="text-center text-sm">
@@ -135,11 +139,11 @@ const onSubmit = async () => {
             </div>
           </div>
         </form>
-        <div class="relative hidden md:block">
+        <div class="relative hidden overflow-hidden md:block">
           <img
-            src="/modules/shared/assets/icons/lain.png"
+            src="/modules/shared/assets/icons/woman.png"
             alt="Image"
-            class="absolute inset-0 h-full w-full rounded-r-2xl object-cover dark:brightness-[0.2] dark:grayscale"
+            class="absolute inset-0 h-full w-full object-cover object-center"
           />
         </div>
       </div>
