@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Button from '~/modules/shared/components/common/buttons/Button.vue'
-import Link from '~/modules/shared/components/common/buttons/Link.vue'
 import { Apple } from 'lucide-vue-next'
 </script>
 
@@ -11,17 +10,27 @@ import { Apple } from 'lucide-vue-next'
         <form class="p-6 md:p-8">
           <div class="flex flex-col gap-6">
             <div class="flex flex-col items-center text-center">
-              <h1 class="text-2xl font-bold">Добро пожаловать</h1>
+              <h1 class="text-2xl font-bold">Зарегистрироваться</h1>
               <p class="text-start text-gray-600">
-                Введите ваш email чтобы войти
+                Заполните все поля для регистрации
               </p>
+            </div>
+            <div class="grid gap-3">
+              <label class="floating-label">
+                <span>Имя</span>
+                <input
+                  type="text"
+                  placeholder="Введите ваше имя"
+                  class="input input-primary border"
+                />
+              </label>
             </div>
             <div class="grid gap-3">
               <label class="floating-label">
                 <span>Email</span>
                 <input
                   type="text"
-                  placeholder="email"
+                  placeholder="Введите ваш email"
                   class="input input-primary border"
                 />
               </label>
@@ -61,9 +70,9 @@ import { Apple } from 'lucide-vue-next'
             </button>
             <div class="text-center text-sm">
               Нет аккаунта?
-              <NuxtLink to="/register">
+              <NuxtLink to="/authorization">
                 <button class="btn btn-link m-0 p-0 hover:text-blue-400">
-                  Зарегестрироваться
+                  Войти
                 </button></NuxtLink
               >
             </div>
@@ -72,7 +81,7 @@ import { Apple } from 'lucide-vue-next'
 
         <div class="relative hidden md:block">
           <img
-            src="/modules/shared/assets/icons/lain.png"
+            src="/modules/shared/assets/icons/Tralalero_Tralala.png"
             alt="Image"
             class="absolute inset-0 h-full w-full rounded-r-2xl object-cover dark:brightness-[0.2] dark:grayscale"
           />

@@ -1,5 +1,7 @@
 <template>
-  <NuxtPage />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 <style>
 .page-enter-active,
@@ -21,7 +23,4 @@
   opacity: 0;
   filter: blur(0.5rem);
 }
-
-
-
 </style>
