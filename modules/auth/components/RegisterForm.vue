@@ -185,7 +185,7 @@ const loginWithYandex = () => {
         </form>
         <div class="relative hidden overflow-hidden md:block">
           <img
-            src="/modules/shared/assets/icons/auth/auth_2.jpg"
+            src="/modules/shared/assets/icons/auth/guts.jpg"
             alt="Image"
             class="absolute inset-0 h-full w-full object-cover object-center"
           />
