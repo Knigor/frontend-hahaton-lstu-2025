@@ -24,6 +24,11 @@ export default defineNuxtModule({
                 //     }
                 // ]
             })
+            pages.push({
+                name: 'secondary',
+                path: '/secondary',
+                file: path.resolve(__dirname, 'pages/SecondaryPage.vue'),
+            })
         })
     }
 })

@@ -14,7 +14,6 @@ export default defineNuxtConfig({
   dir: {
     layouts: './modules/shared/layouts'
   },
-
   modules: [
     '@pinia/nuxt',
     'nuxt-svgo',

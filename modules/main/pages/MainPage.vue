@@ -1,9 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ModalStart from '../components/ModalStart.vue'
+definePageMeta({
+  layout: 'custom'
+})
+const isOpen = ref<Boolean>(false)
+</script>
 
 <template>
-  <div>
-    <h1 class="text-red-400">Главная страница</h1>
-  </div>
+  <button @click="isOpen = true" class="btn btn-primary">Указать данные</button>
+  <ModalStart v-model="isOpen" />
 </template>
 
 <style scoped></style>
