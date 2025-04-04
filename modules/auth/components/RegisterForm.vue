@@ -70,6 +70,29 @@ const onSubmit = async () => {
   }
 }
 
+onMounted(() => {
+  window.YaAuthSuggest.init(
+    {
+      client_id: '607b69aea9714146a984ddeaf9e303e4',
+      response_type: 'token',
+      redirect_uri: 'https://not-five.ru'
+    },
+    'https://not-five.ru',
+    {
+      view: 'button',
+      parentId: 'buttonContainerId',
+      buttonSize: 'm',
+      buttonView: 'main',
+      buttonTheme: 'light',
+      buttonBorderRadius: '16',
+      buttonIcon: 'ya'
+    }
+  )
+    .then(({ handler }) => handler())
+    .then((data) => console.log('Сообщение с токеном', data))
+    .catch((error) => console.log('Обработка ошибки', error))
+})
+
 const loginWithYandex = () => {
   console.log('Переход к авторизации через Яндекс ID')
   // Здесь можно добавить редирект на страницу авторизации Яндекса
@@ -148,13 +171,8 @@ const loginWithYandex = () => {
             >
               Зарегистрироваться
             </button>
-            <button
-              class="btn rounded-2xl border-black bg-black text-white"
-              @click.prevent="loginWithYandex"
-            >
-              <YandexIcon filled :font-controlled="false" class="h-6 w-6" />
-              Войти с Яндекс ID
-            </button>
+            <!-- Кнопка яндекса -->
+            <div id="buttonContainerId" class="flex justify-center"></div>
             <div class="text-center text-sm">
               Уже есть аккаунт?
               <NuxtLink to="/authorization">
@@ -167,7 +185,7 @@ const loginWithYandex = () => {
         </form>
         <div class="relative hidden overflow-hidden md:block">
           <img
-            src="/modules/shared/assets/icons/auth_png.png"
+            src="/modules/shared/assets/icons/auth/auth_2.jpg"
             alt="Image"
             class="absolute inset-0 h-full w-full object-cover object-center"
           />
@@ -185,6 +203,10 @@ const loginWithYandex = () => {
   100% {
     left: 100%;
   }
+}
+
+.yaPreloadingSuggestBlockContainer {
+  height: 0px;
 }
 
 .inner-bar {
