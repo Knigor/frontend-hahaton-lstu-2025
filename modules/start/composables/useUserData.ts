@@ -7,8 +7,8 @@ export const useUserDataFunc = () => {
   const userDataStore = useUserData()
   async function sendData() {
     try {
-      await $publicApi('auth/login', {
-        method: 'POST',
+      await $publicApi('symfony/user/', {
+        method: 'PUT',
         body: {
           type: userDataStore.type,
           sex: userDataStore.sex,
