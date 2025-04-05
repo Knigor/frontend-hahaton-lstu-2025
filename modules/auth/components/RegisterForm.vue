@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { object, string, ValidationError } from 'yup'
-import { ref, computed } from 'vue'
-import YandexIcon from '~/modules/shared/assets/icons/Yandex_icon_1.svg'
+import { useAuth } from '../composables/useAuth'
+
+const { onRegister } = useAuth()
 
 const name = ref('')
 const nameError = ref('')
@@ -57,16 +58,16 @@ const onSubmit = async () => {
   resetErrors()
   isPending.value = true
   try {
-    setTimeout(() => {
-      isPending.value = false
-      console.log('Регистрация успешна:', {
-        name: name.value,
-        email: email.value,
-        password: password.value
-      })
-    }, 2000)
+    await onRegister(name.value, email.value, password.value)
+    if (localStorage.getItem('firstLogin')) {
+      return navigateTo('/')
+    } else {
+      return navigateTo('/start')
+    }
   } catch (err) {
     console.error('Ошибка при регистрации:', err)
+  } finally {
+    isPending.value = false
   }
 }
 
@@ -74,8 +75,9 @@ onMounted(() => {
   window.YaAuthSuggest.init(
     {
       client_id: '607b69aea9714146a984ddeaf9e303e4',
-      response_type: 'token',
-      redirect_uri: 'https://not-five.ru'
+      response_type: 'code',
+      tokenPageOrigin: 'dima_loh',
+      redirect_uri: 'https://not-five.ru/api/auth/yandex/callback'
     },
     'https://not-five.ru',
     {

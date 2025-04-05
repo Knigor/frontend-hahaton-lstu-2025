@@ -1,20 +1,6 @@
 <script setup lang="ts">
 import { object, string, ValidationError } from 'yup'
 import { useAuth } from '../composables/useAuth'
-import { useStorage } from '@vueuse/core'
-
-const popupClosed = useStorage('popupClosed', false)
-
-console.log('popupClosed', popupClosed.value)
-
-// Следим за изменением значения popupClosed
-watchEffect(() => {
-  if (popupClosed.value === 'true') {
-    console.log('Popup был закрыт, обновляем страницу авторизации')
-    window.location.reload() // Перезагружаем страницу
-    popupClosed.value = 'false' // Сбрасываем флаг после обновления
-  }
-})
 
 const { onLogin } = useAuth()
 const email = ref('')
@@ -22,6 +8,8 @@ const emailError = ref('')
 
 const password = ref('')
 const passwordError = ref('')
+
+const authError = ref('')
 
 const isPending = ref(false)
 
@@ -32,6 +20,7 @@ const isFormSubmitDisabled = computed(
 const resetErrors = () => {
   emailError.value = ''
   passwordError.value = ''
+  authError.value = ''
 }
 
 const checkValid = async () => {
@@ -85,11 +74,23 @@ onMounted(() => {
 const onSubmit = async () => {
   const isValid = await checkValid()
   if (!isValid) return
+  authError.value = ''
   resetErrors()
   isPending.value = true
+
   try {
-    await onLogin(email.value, password.value)
-    navigateTo('/')
+    const response = await onLogin(email.value, password.value)
+
+    if (response.success) {
+      if (localStorage.getItem('firstLogin')) {
+        return navigateTo('/')
+      } else {
+        return navigateTo('/start')
+      }
+    } else if (response.error) {
+      authError.value = 'Неправильный логин или пароль'
+      console.error('Ошибка при входе:', response.error)
+    }
   } catch (err) {
     console.error('Ошибка при отправке формы:', err)
   } finally {
@@ -138,6 +139,9 @@ const onSubmit = async () => {
                 <p v-if="passwordError" class="text-sm text-red-500">
                   {{ passwordError }}
                 </p>
+                <p v-if="authError" class="text-sm text-red-500">
+                  {{ authError }}
+                </p>
               </label>
             </div>
             <div
@@ -169,7 +173,7 @@ const onSubmit = async () => {
         </form>
         <div class="relative hidden overflow-hidden md:block">
           <img
-            src="/modules/shared/assets/icons/auth/guts.jpg"
+            src="/modules/shared/assets/icons/auth/auth_4.jpg"
             alt="Image"
             class="absolute inset-0 h-full w-full object-cover object-center"
           />

@@ -11,6 +11,16 @@ export default defineNuxtPlugin(() => {
     headers: {},
     baseURL: `${useRuntimeConfig().public.apiBase}`,
 
+    async onRequest({ request, options }) {
+      // Добавляем токен в заголовки, если он есть
+      if (authStore.accessToken) {
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${authStore.accessToken}`
+        }
+      }
+    },
+
     async onResponse({ request, options, response }) {
       console.log('Protected API onResponse:', {
         response,
@@ -19,12 +29,10 @@ export default defineNuxtPlugin(() => {
         options
       })
     },
+
     async onResponseError(ctx) {
       if ([401].includes(ctx.response.status)) {
-        console.log(authStore.getRefreshToken)
-        if (ctx.request.endsWith('/api/token/refresh/')) return // чтобы не уйти в луп
-        if (ctx.request.endsWith('/api/token/')) return // чтобы не уйти в луп
-        authStore.logout()
+        // authStore.logout()
         return navigateTo('/authorization')
       }
     }
@@ -35,7 +43,6 @@ export default defineNuxtPlugin(() => {
     options?: ApiRequestOptions
   ): Promise<T> => request(url, options) as Promise<T>
 
-  // Экспортируем защищенный API-клиент
   return {
     provide: {
       protectedApi
