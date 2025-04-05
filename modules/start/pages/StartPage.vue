@@ -8,6 +8,14 @@ import { useUserData } from '../store/user'
 import { useAuth } from '~/modules/auth/composables/useAuth'
 const { logout } = useAuth()
 
+onMounted(() => {
+  if (window.opener) {
+    // Отправляем сообщение в родительское окно перед закрытием
+    window.opener.postMessage('refreshApp', '*')
+    window.close()
+  }
+})
+
 const userDataStore = useUserData()
 const router = useRouter()
 
