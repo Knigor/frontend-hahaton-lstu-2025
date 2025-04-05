@@ -84,7 +84,7 @@ const handleLogOut = async () => {
         <LogOut @click="handleLogOut" stroke-width="1.5" color="#422AD5" />
       </div>
     </div>
-    <div @click="openPanel" class="h-full w-1 cursor-pointer"></div>
+    <div @click="openPanel" class="h-full w-1"></div>
     <slot></slot>
   </div>
 </template>
