@@ -7,8 +7,8 @@
 
 <template>
     <div>
-        <NuxtLink to="/">хуй</NuxtLink>
-        высрал
+        <NuxtLink to="/"></NuxtLink>
+        
     </div>
 </template>
 
