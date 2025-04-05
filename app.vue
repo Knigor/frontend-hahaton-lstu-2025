@@ -1,9 +1,24 @@
 <script setup>
+import { useAuthStore } from './modules/auth/store/auth'
+
+const authStore = useAuthStore()
+const route = useRoute()
+const router = useRouter()
+
 useHead({
   htmlAttrs: {
-    'data-theme': 'light',
-  },
+    'data-theme': 'light'
+  }
 })
+
+watch(
+  () => authStore.accessToken,
+  (newToken) => {
+    if (newToken && route.path !== '/') {
+      router.push('/')
+    }
+  }
+)
 </script>
 <template>
   <NuxtLayout>
