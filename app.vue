@@ -4,6 +4,23 @@ useHead({
     'data-theme': 'light'
   }
 })
+
+onMounted(() => {
+  window.addEventListener('message', (event) => {
+    if (event.data === 'refreshApp') {
+      // Обновляем всё приложение
+      window.location.reload()
+
+      // Или, если вы используете Nuxt 3 и хотите более мягкое обновление:
+      // refreshNuxtData() // для обновления данных
+      // await navigateTo('/', { replace: true }) // для навигации на корень
+    }
+  })
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('message')
+})
 </script>
 <template>
   <NuxtLayout>
