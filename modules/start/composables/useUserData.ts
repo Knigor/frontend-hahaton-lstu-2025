@@ -2,12 +2,12 @@ import { useUserData } from '../store/user'
 import type { $Fetch } from 'ofetch'
 
 export const useUserDataFunc = () => {
-  const { $publicApi } = useNuxtApp() as unknown as { $publicApi: $Fetch }
+  const { $protectedApi } = useNuxtApp() as unknown as { $protectedApi: $Fetch }
 
   const userDataStore = useUserData()
   async function sendData() {
     try {
-      await $publicApi('symfony/user/', {
+      await $protectedApi('symfony/user/', {
         method: 'PUT',
         body: {
           type: userDataStore.type,

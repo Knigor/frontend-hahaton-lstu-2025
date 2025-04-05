@@ -14,7 +14,8 @@ const { sendData } = useUserDataFunc()
 const firstLogin = useStorage<boolean | null>('firstLogin', false)
 
 async function handleSendData() {
-  // await sendData()
+  await sendData()
+
   firstLogin.value = true
   navigateTo('/wait')
 }
