@@ -33,6 +33,16 @@ export const useAuth = () => {
     }
   }
 
+  const logout = async () => {
+    try {
+      await $publicApi('auth/logout')
+      authStore.logout()
+      return { success: true }
+    } catch (error) {
+      return { success: false, error }
+    }
+  }
+
   const refreshToken = async () => {
     try {
       const { token: access_token } = await $publicApi('auth/refresh_token')
@@ -46,5 +56,5 @@ export const useAuth = () => {
     }
   }
 
-  return { onLogin, refreshToken, onRegister }
+  return { onLogin, refreshToken, onRegister, logout }
 }

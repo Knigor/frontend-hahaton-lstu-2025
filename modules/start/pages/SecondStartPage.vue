@@ -14,10 +14,14 @@ const { sendData } = useUserDataFunc()
 const firstLogin = useStorage<boolean | null>('firstLogin', false)
 
 async function handleSendData() {
-  await sendData()
+  const response = await sendData()
 
-  firstLogin.value = true
-  navigateTo('/wait')
+  if (response.success) {
+    firstLogin.value = true
+    navigateTo('/wait')
+  } else {
+    console.error('Ошибка при отправке данных:', response.error)
+  }
 }
 const userDataStore = useUserData()
 const router = useRouter()
@@ -60,8 +64,8 @@ const tooltipMessage = computed(() => {
         </div>
         <div class="flex flex-row justify-around gap-2">
           <TargetCard
-            @click="userDataStore.equipment = 'minimum'"
-            :selected="userDataStore.equipment === 'minimum'"
+            @click="userDataStore.equipment = 'minimal'"
+            :selected="userDataStore.equipment === 'minimal'"
             header="Минимум"
           >
             <img
