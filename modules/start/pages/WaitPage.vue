@@ -32,6 +32,10 @@ const startTextRotation = () => {
 
 onMounted(() => {
   startTextRotation()
+  // потом убрать, должен быть await
+  setTimeout(() => {
+    navigateTo('/')
+  }, 6000)
 })
 </script>
 
