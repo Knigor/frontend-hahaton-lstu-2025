@@ -48,7 +48,8 @@ onMounted(() => {
   window.YaAuthSuggest.init(
     {
       client_id: '607b69aea9714146a984ddeaf9e303e4',
-      response_type: 'token',
+      response_type: 'code',
+      tokenPageOrigin: 'dima_loh',
       redirect_uri: 'https://not-five.ru/api/auth/yandex/callback'
     },
     'https://not-five.ru',
