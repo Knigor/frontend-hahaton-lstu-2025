@@ -1,6 +1,20 @@
 <script setup lang="ts">
 import { object, string, ValidationError } from 'yup'
 import { useAuth } from '../composables/useAuth'
+import { useStorage } from '@vueuse/core'
+
+const popupClosed = useStorage('popupClosed', false)
+
+console.log('popupClosed', popupClosed.value)
+
+// Следим за изменением значения popupClosed
+watchEffect(() => {
+  if (popupClosed.value === 'true') {
+    console.log('Popup был закрыт, обновляем страницу авторизации')
+    window.location.reload() // Перезагружаем страницу
+    popupClosed.value = 'false' // Сбрасываем флаг после обновления
+  }
+})
 
 const { onLogin } = useAuth()
 const email = ref('')

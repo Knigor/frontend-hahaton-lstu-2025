@@ -9,16 +9,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const publicRoutes = ['/authorization', '/register']
 
-  // Проверка флага из localStorage
-  watchEffect(() => {
-    const popupClosed = localStorage.getItem('popupClosed')
-    if (popupClosed === 'true') {
-      console.log('Popup был закрыт, обновляем страницу авторизации')
-      window.location.reload() // Обновляем страницу
-      localStorage.removeItem('popupClosed') // Убираем флаг после обновления
-    }
-  })
-
   if (authStore.accessToken === null) {
     const response = await refreshToken()
 
