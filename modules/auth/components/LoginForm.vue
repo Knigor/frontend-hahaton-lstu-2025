@@ -68,10 +68,6 @@ onMounted(() => {
     .catch((error) => console.log('Обработка ошибки', error))
 })
 
-const loginWithYandex = () => {
-  window.location.href = 'https://not-five.ru/api/auth/yandex/login'
-}
-
 const onSubmit = async () => {
   const isValid = await checkValid()
   if (!isValid) return
@@ -147,12 +143,6 @@ const onSubmit = async () => {
             </button>
             <!-- Кнопка яндекса -->
             <div id="buttonContainerId" class="flex justify-center"></div>
-            <button
-              class="btn btn-primary w-full rounded-2xl"
-              @click="loginWithYandex"
-            >
-              Яндекс
-            </button>
             <div class="text-center text-sm">
               Нет аккаунта?
               <NuxtLink to="/register">
