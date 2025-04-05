@@ -3,9 +3,13 @@ import ModalStart from '../components/ModalStart.vue'
 import { MoveLeft } from 'lucide-vue-next'
 import { MoveRight } from 'lucide-vue-next'
 import FoodCard from '../components/FoodCard.vue'
+import ScrollSection from '../components/ScrollSection.vue'
+import { ref, onMounted } from 'vue'
+
 definePageMeta({
   layout: 'custom'
 })
+
 const isOpen = ref<boolean>(false)
 </script>
 
@@ -27,21 +31,42 @@ const isOpen = ref<boolean>(false)
       <div class="flex flex-row">
         <div class="grow">
           <div class="text-[24px] font-medium">Питание</div>
-          <div>Завтрак</div>
-          <div class="flex flex-row items-center justify-center gap-2">
-            <MoveLeft size="48"></MoveLeft>
-            <FoodCard name="Яйца" value="4 шт"></FoodCard>
-            <MoveRight size="48"></MoveRight>
-          </div>
-          <div>Обед</div>
-          <div>Ужин</div>
+          <div class="text-[20px]">Завтрак</div>
+          <ScrollSection />
+          <div class="text-[20px]">Обед</div>
+          <ScrollSection />
+          <div class="text-[20px]">Ужин</div>
+          <ScrollSection />
         </div>
         <div class="grow">
           <div class="grow text-[24px] font-medium">Тренировка</div>
+
+          <div class="flex flex-col gap-2">
+            <div class="flex text-[20px] font-medium">Потребуется</div>
+            <div class="flex flex-row gap-1">
+              <div v-for="i in 5" class="flex flex-row gap-1">
+                <div>•</div>
+                <div>Гантеля</div>
+              </div>
+            </div>
+            <div class="flex text-[20px] font-medium">Потребуется</div>
+            <div class="flex flex-row bg-[#E0E0E0]">
+              <div></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+</style>
