@@ -59,7 +59,11 @@ const onSubmit = async () => {
   isPending.value = true
   try {
     await onRegister(name.value, email.value, password.value)
-    navigateTo('/')
+    if (localStorage.getItem('firstLogin')) {
+      return navigateTo('/')
+    } else {
+      return navigateTo('/start')
+    }
   } catch (err) {
     console.error('Ошибка при регистрации:', err)
   } finally {

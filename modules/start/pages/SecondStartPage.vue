@@ -7,10 +7,15 @@ import { MoveRight } from 'lucide-vue-next'
 import { BicepsFlexed } from 'lucide-vue-next'
 import { useUserData } from '../store/user'
 import { useUserDataFunc } from '../composables/useUserData'
+import { useStorage } from '@vueuse/core'
+
 const { sendData } = useUserDataFunc()
+
+const firstLogin = useStorage<boolean | null>('firstLogin', false)
 
 async function handleSendData() {
   // await sendData()
+  firstLogin.value = true
   navigateTo('/wait')
 }
 const userDataStore = useUserData()

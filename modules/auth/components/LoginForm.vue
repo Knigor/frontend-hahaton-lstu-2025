@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { object, string, ValidationError } from 'yup'
 import { useAuth } from '../composables/useAuth'
-import { useStorage } from '@vueuse/core'
 
 const { onLogin } = useAuth()
 const email = ref('')
@@ -72,10 +71,6 @@ onMounted(() => {
     .catch((error) => console.log('Обработка ошибки', error))
 })
 
-const firstLogin = useStorage<boolean | null>('firstLogin', false)
-
-console.log('firstLogin', firstLogin.value)
-
 const onSubmit = async () => {
   const isValid = await checkValid()
   if (!isValid) return
@@ -87,7 +82,11 @@ const onSubmit = async () => {
     const response = await onLogin(email.value, password.value)
 
     if (response.success) {
-      navigateTo('/start')
+      if (localStorage.getItem('firstLogin')) {
+        return navigateTo('/')
+      } else {
+        return navigateTo('/start')
+      }
     } else if (response.error) {
       authError.value = 'Неправильный логин или пароль'
       console.error('Ошибка при входе:', response.error)
