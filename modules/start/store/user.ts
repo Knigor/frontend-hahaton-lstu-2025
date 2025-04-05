@@ -11,6 +11,18 @@ export const useUserData = defineStore('userdata', () => {
   const other = ref('')
   const form = ref('nothing')
 
+  const clearData = () => {
+    type.value = ''
+    sex.value = 'male'
+    age.value = null
+    height.value = null
+    weight.value = null
+    targetWeight.value = null
+    equipment.value = ''
+    other.value = ''
+    form.value = 'nothing'
+  }
+
   return {
     type,
     sex,
@@ -20,6 +32,7 @@ export const useUserData = defineStore('userdata', () => {
     targetWeight,
     equipment,
     other,
-    form
+    form,
+    clearData
   }
 })

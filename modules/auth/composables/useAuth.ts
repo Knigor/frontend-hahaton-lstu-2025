@@ -1,9 +1,11 @@
 import { useAuthStore } from '~/modules/auth/store/auth'
 import type { $Fetch } from 'ofetch'
+import { useUserData } from '~/modules/start/store/user'
 
 export const useAuth = () => {
   const { $publicApi } = useNuxtApp() as unknown as { $publicApi: $Fetch }
   const authStore = useAuthStore()
+  const userDataStore = useUserData()
 
   const onLogin = async (login: string, password: string) => {
     try {
@@ -37,6 +39,7 @@ export const useAuth = () => {
     try {
       await $publicApi('auth/logout')
       authStore.logout()
+      userDataStore.clearData()
       return { success: true }
     } catch (error) {
       return { success: false, error }

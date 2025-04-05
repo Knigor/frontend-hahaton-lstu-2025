@@ -6,12 +6,16 @@ import { MessageSquare } from 'lucide-vue-next'
 import { RotateCw } from 'lucide-vue-next'
 import { ExternalLink } from 'lucide-vue-next'
 import ModalStart from '../components/ModalStart.vue'
+import ModalChat from '../components/ModalChat.vue'
+import SendPlan from '../components/SendPlan.vue'
 import { User } from 'lucide-vue-next'
 import { ListRestart } from 'lucide-vue-next'
 import { useAuthStore } from '~/modules/auth/store/auth'
 import { useAuth } from '~/modules/auth/composables/useAuth'
 
 const openModal = ref(false)
+const openChat = ref(false)
+const openSend = ref(false)
 
 const authStore = useAuthStore()
 const { logout } = useAuth()
@@ -67,15 +71,29 @@ const handleLogOut = async () => {
         class="tooltip tooltip-right cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"
         data-tip="Чат с нейронкой"
       >
-        <MessageSquare stroke-width="1.5" color="#422AD5" class="h-8 w-8" />
+        <MessageSquare
+          @click="openChat = true"
+          stroke-width="1.5"
+          color="#422AD5"
+          class="h-8 w-8"
+        />
       </div>
+
+      <ModalChat v-model="openChat"></ModalChat>
 
       <div
         class="tooltip tooltip-right cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"
         data-tip="Поделиться планом"
       >
-        <ExternalLink stroke-width="1.5" color="#422AD5" class="h-8 w-8" />
+        <ExternalLink
+          @click="openSend = true"
+          stroke-width="1.5"
+          color="#422AD5"
+          class="h-8 w-8"
+        />
       </div>
+
+      <SendPlan v-model="openSend"></SendPlan>
 
       <div
         class="tooltip tooltip-right mt-auto cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"

@@ -5,6 +5,8 @@ import Input from '../components/Input.vue'
 import { LogOut } from 'lucide-vue-next'
 import { MoveRight } from 'lucide-vue-next'
 import { useUserData } from '../store/user'
+import { useAuth } from '~/modules/auth/composables/useAuth'
+const { logout } = useAuth()
 
 const userDataStore = useUserData()
 const router = useRouter()
@@ -23,6 +25,17 @@ const allChoosed = computed(() => {
     return false
   }
 })
+
+const handleLogOut = async () => {
+  const response = await logout()
+
+  if (response.success) {
+    navigateTo('/authorization')
+  } else {
+    console.error('Ошибка при выходе:', response.error)
+  }
+}
+
 const type = ref('')
 const sex = ref('male')
 const age = ref(null)
@@ -134,12 +147,17 @@ const tooltipMessage = computed(() => {
       </div>
     </div>
     <div class="flex w-full flex-row">
-      <button
-        class="btn btn-primary btn-outline rounded-2xl border-[2px] p-6 text-2xl"
+      <div
+        class="tooltip tooltip-right mt-auto cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"
+        data-tip="Выход"
       >
-        <LogOut color="#422AD5"></LogOut>
-        Выход
-      </button>
+        <LogOut
+          @click="handleLogOut"
+          class="h-8 w-8"
+          stroke-width="1.5"
+          color="#422AD5"
+        />
+      </div>
       <div
         :class="[allChoosed ? '' : 'tooltip', 'mr-auto', 'ml-auto']"
         :data-tip="'Введите все параметры'"

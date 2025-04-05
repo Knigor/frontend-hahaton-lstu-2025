@@ -8,6 +8,8 @@ import { BicepsFlexed } from 'lucide-vue-next'
 import { useUserData } from '../store/user'
 import { useUserDataFunc } from '../composables/useUserData'
 import { useStorage } from '@vueuse/core'
+import { useAuth } from '~/modules/auth/composables/useAuth'
+const { logout } = useAuth()
 
 const { sendData } = useUserDataFunc()
 
@@ -25,6 +27,16 @@ async function handleSendData() {
 }
 const userDataStore = useUserData()
 const router = useRouter()
+
+const handleLogOut = async () => {
+  const response = await logout()
+
+  if (response.success) {
+    navigateTo('/authorization')
+  } else {
+    console.error('Ошибка при выходе:', response.error)
+  }
+}
 
 const allChoosed = computed(() => {
   if (userDataStore.equipment && userDataStore.other && userDataStore.form) {
@@ -163,12 +175,17 @@ const tooltipMessage = computed(() => {
       </div>
     </div>
     <div class="flex w-full flex-row">
-      <button
-        class="btn btn-primary btn-outline rounded-2xl border-[2px] p-6 text-2xl"
+      <div
+        class="tooltip tooltip-right mt-auto cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"
+        data-tip="Выход"
       >
-        <LogOut color="#422AD5"></LogOut>
-        Выход
-      </button>
+        <LogOut
+          @click="handleLogOut"
+          class="h-8 w-8"
+          stroke-width="1.5"
+          color="#422AD5"
+        />
+      </div>
       <div :class="['mr-auto', 'ml-auto', 'flex', 'gap-4']">
         <button
           @click="router.push('/start')"
