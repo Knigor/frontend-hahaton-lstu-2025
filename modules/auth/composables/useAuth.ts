@@ -19,30 +19,6 @@ export const useAuth = () => {
     }
   }
 
-  const onRegister = async (name: string, login: string, password: string) => {
-    try {
-      const { token: access_token } = await $publicApi('auth/register', {
-        method: 'POST',
-        body: { name: name, email: login, password }
-      })
-      authStore.setAccessToken(access_token)
-
-      return { success: true }
-    } catch (error) {
-      return { success: false, error }
-    }
-  }
-
-  const logout = async () => {
-    try {
-      await $publicApi('auth/logout')
-      authStore.logout()
-      return { success: true }
-    } catch (error) {
-      return { success: false, error }
-    }
-  }
-
   const refreshToken = async () => {
     try {
       const { token: access_token } = await $publicApi('auth/refresh_token')
@@ -56,5 +32,5 @@ export const useAuth = () => {
     }
   }
 
-  return { onLogin, refreshToken, onRegister, logout }
+  return { onLogin, refreshToken }
 }
