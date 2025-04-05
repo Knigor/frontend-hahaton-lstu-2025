@@ -10,8 +10,11 @@ import ModalStart from '../components/ModalStart.vue'
 const openModal = ref(false)
 
 onMounted(() => {
-  // Если это окно было открыто другим окном (popup)
   if (window.opener) {
+    // Обновляем страницу во вкладке, которая открыла popup
+    window.opener.location.reload()
+
+    // Закрываем popup
     window.close()
   }
 })
