@@ -13,6 +13,8 @@ onMounted(() => {
   if (window.opener) {
     // Закрываем popup
     window.close()
+    // Устанавливаем флаг в localStorage, чтобы основной странице знать о закрытии popup
+    localStorage.setItem('popupClosed', 'true')
   }
 })
 
