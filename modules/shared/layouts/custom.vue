@@ -11,10 +11,9 @@ const openModal = ref(false)
 
 onMounted(() => {
   if (window.opener) {
-    // Закрываем popup
+    // Отправляем сообщение в родительское окно перед закрытием
+    window.opener.postMessage('refreshApp', '*')
     window.close()
-    // Устанавливаем флаг в localStorage, чтобы основной странице знать о закрытии popup
-    localStorage.setItem('popupClosed', 'true')
   }
 })
 
