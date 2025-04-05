@@ -7,7 +7,7 @@
 
 <template>
     <div>
-        <NuxtLink to="/"></NuxtLink>
+
         
     </div>
 </template>
