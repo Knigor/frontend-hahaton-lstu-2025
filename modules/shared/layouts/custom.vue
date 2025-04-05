@@ -11,8 +11,6 @@ const openModal = ref(false)
 
 onMounted(() => {
   if (window.opener) {
-    // Обновляем страницу во вкладке, которая открыла popup
-
     // Закрываем popup
     window.close()
   }

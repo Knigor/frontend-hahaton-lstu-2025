@@ -5,7 +5,20 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const authStore = useAuthStore()
   const { refreshToken } = useAuth()
 
+  console.log('вызываем middleware')
+
   const publicRoutes = ['/authorization', '/register']
+
+  // Слежение за изменениями токена
+  watch(
+    () => authStore.accessToken,
+    async (newToken, oldToken) => {
+      if (newToken !== oldToken) {
+        console.log('Токен изменен, перезагружаем страницу')
+        navigateTo('/')
+      }
+    }
+  )
 
   if (authStore.accessToken === null) {
     const response = await refreshToken()
