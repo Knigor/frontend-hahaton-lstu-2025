@@ -1,5 +1,6 @@
 @import './fonts.css';
 
+
 @import 'tailwindcss';
 @plugin "daisyui";
 
@@ -9,7 +10,6 @@
 
 html {
   font-family: 'Inter', sans-serif !important;
-  box-sizing: border-box;
 }
 .custom-scroll {
   overflow: auto;
@@ -68,7 +68,6 @@ html {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  box-sizing: border-box;
 }
 
 .dark {

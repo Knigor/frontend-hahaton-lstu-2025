@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const authStore = useAuthStore()
   const { refreshToken } = useAuth()
 
-  console.log('вызываем middleware', localStorage.getItem('firstLogin'))
+  console.log('вызываем middleware')
 
   const publicRoutes = ['/authorization', '/register']
 
@@ -13,11 +13,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const response = await refreshToken()
 
     if (response.success) {
-      if (localStorage.getItem('firstLogin')) {
-        return navigateTo('/')
-      } else {
-        return navigateTo('/start')
-      }
+      return navigateTo('/')
     }
 
     if (response?.error?.status === 401 && !publicRoutes.includes(to.path)) {

@@ -10,7 +10,10 @@ export const useAuthStore = defineStore('auth', {
       this.accessToken = token
     },
     logout() {
+      this.scheduleTimeoutId = null
       this.accessToken = null
+      const refreshToken = useCookie('refresh_token')
+      refreshToken.value = null
       sessionStorage.clear()
       localStorage.clear()
     }
