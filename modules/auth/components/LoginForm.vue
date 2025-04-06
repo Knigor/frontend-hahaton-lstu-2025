@@ -177,7 +177,7 @@ const onSubmit = async () => {
           <img
             src="/modules/shared/assets/icons/auth/auth_4.jpg"
             alt="Image"
-            class="absolute inset-0 h-full w-full object-cover object-center"
+            class="absolute inset-0 h-full w-full rounded-r-2xl object-cover object-center"
           />
         </div>
       </div>
