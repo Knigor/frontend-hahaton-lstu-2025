@@ -21,6 +21,18 @@ export const useAuth = () => {
       // После установки токена, вызываем getProfile
       const { response, success, error } = await getProfile()
 
+      if (response.filled_in_data) {
+        userDataStore.age = response.age
+        userDataStore.height = response.height
+        userDataStore.weight = response.weight
+        userDataStore.sex = response.gender
+        userDataStore.form = response.level_of_training
+        userDataStore.equipment = response.inventory
+        userDataStore.targetWeight = response.desired_weight
+        userDataStore.type = response.target
+        userDataStore.other = response.details
+      }
+
       if (!success) {
         return { success: false, error }
       }
