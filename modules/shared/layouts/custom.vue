@@ -53,6 +53,7 @@ const handleLogOut = async () => {
       class="flex w-16 flex-col items-center border-r-[1px] border-gray-300 pt-[24px] pb-[24px]"
     >
       <div
+        @click="openModal = true"
         class="tooltip tooltip-right hover:borderx mb-auto flex cursor-pointer flex-row rounded-2xl p-2 transition duration-300 hover:rounded-2xl hover:bg-gray-200"
         data-tip="Профиль"
       >
