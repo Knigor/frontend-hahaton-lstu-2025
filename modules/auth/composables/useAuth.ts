@@ -1,11 +1,13 @@
 import { useAuthStore } from '~/modules/auth/store/auth'
 import type { $Fetch } from 'ofetch'
 import { useUserData } from '~/modules/start/store/user'
+import { useProfile } from '~/modules/main/composables/useProfile'
 
 export const useAuth = () => {
   const { $publicApi } = useNuxtApp() as unknown as { $publicApi: $Fetch }
   const authStore = useAuthStore()
   const userDataStore = useUserData()
+  const { getProfile } = useProfile()
 
   const onLogin = async (login: string, password: string) => {
     try {
@@ -13,9 +15,30 @@ export const useAuth = () => {
         method: 'POST',
         body: { email: login, password }
       })
+
       authStore.setAccessToken(access_token)
 
-      return { success: true }
+      // После установки токена, вызываем getProfile
+      const { response, success, error } = await getProfile()
+
+      if (response.filled_in_data) {
+        userDataStore.age = response.age
+        userDataStore.height = response.height
+        userDataStore.weight = response.weight
+        userDataStore.sex = response.gender
+        userDataStore.form = response.level_of_training
+        userDataStore.equipment = response.inventory
+        userDataStore.targetWeight = response.desired_weight
+        userDataStore.type = response.target
+        userDataStore.other = response.details
+      }
+
+      if (!success) {
+        return { success: false, error }
+      }
+
+      // Если всё прошло успешно, возвращаем токен и профиль
+      return { success: true, profile: response }
     } catch (error) {
       return { success: false, error }
     }
