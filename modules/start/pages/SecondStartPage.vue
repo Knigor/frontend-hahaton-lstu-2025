@@ -148,7 +148,7 @@ const tooltipMessage = computed(() => {
                 :checked="userDataStore.form === 'walk'"
                 @click="userDataStore.form = 'walk'"
               />
-              Ходил под стол
+              Ходил пешком
             </label>
             <label class="fieldset-label text-black">
               <input

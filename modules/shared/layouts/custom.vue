@@ -8,14 +8,20 @@ import { ExternalLink } from 'lucide-vue-next'
 import ModalStart from '../components/ModalStart.vue'
 import ModalChat from '../components/ModalChat.vue'
 import SendPlan from '../components/SendPlan.vue'
+import ModalRefresh from '../components/ModalRefresh.vue'
+import ModalCorrect from '../components/ModalCorrect.vue'
 import { User } from 'lucide-vue-next'
 import { ListRestart } from 'lucide-vue-next'
 import { useAuthStore } from '~/modules/auth/store/auth'
 import { useAuth } from '~/modules/auth/composables/useAuth'
 
+import { MessageSquareQuote } from 'lucide-vue-next'
+
 const openModal = ref(false)
 const openChat = ref(false)
 const openSend = ref(false)
+const openRefresh = ref(false)
+const openCorrect = ref(false)
 
 const authStore = useAuthStore()
 const { logout } = useAuth()
@@ -55,17 +61,31 @@ const handleLogOut = async () => {
 
       <div
         class="tooltip tooltip-right cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"
-        data-tip="Изменить данные"
+        data-tip="Скорректировать план"
       >
-        <ListRestart
+        <MessageSquareQuote
           stroke-width="1.5"
           color="#422AD5"
-          @click="openModal = true"
+          @click="openCorrect = true"
           class="h-8 w-8"
         />
       </div>
 
-      <ModalStart v-model="openModal"></ModalStart>
+      <ModalCorrect v-model="openCorrect"></ModalCorrect>
+
+      <div
+        class="tooltip tooltip-right cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"
+        data-tip="Обновить план"
+      >
+        <ListRestart
+          stroke-width="1.5"
+          color="#422AD5"
+          @click="openRefresh = true"
+          class="h-8 w-8"
+        />
+      </div>
+
+      <ModalRefresh v-model="openRefresh"></ModalRefresh>
 
       <div
         class="tooltip tooltip-right cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"

@@ -13,5 +13,18 @@ export const usePlanGenerate = () => {
       return { success: false, error }
     }
   }
-  return { getGenerate }
+
+  async function sendFintess(comment: string) {
+    try {
+      const result = await $protectedApi('fitness/plan/generate', {
+        method: 'POST',
+        body: { comment: comment }
+      })
+      return { response: result, success: true }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return { getGenerate, sendFintess }
 }
