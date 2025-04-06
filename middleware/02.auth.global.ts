@@ -28,6 +28,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
       userDataStore.targetWeight = response.desired_weight
       userDataStore.type = response.target
       userDataStore.other = response.details
+    } else {
+      navigateTo('/')
     }
 
     if (!success) {
