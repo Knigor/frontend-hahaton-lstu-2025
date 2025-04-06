@@ -8,7 +8,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { usePlanGenerate } from '../composables/usePlanGenerate'
+
+const { getGenerate } = usePlanGenerate()
 
 const texts = [
   'Подбираем упражнения...',
@@ -30,12 +32,17 @@ const startTextRotation = () => {
   }, 3000)
 }
 
-onMounted(() => {
+onMounted(async () => {
   startTextRotation()
   // потом убрать, должен быть await
-  setTimeout(() => {
+
+  const response = await getGenerate()
+
+  if (response.success) {
     navigateTo('/')
-  }, 6000)
+  } else {
+    navigateTo('/start')
+  }
 })
 </script>
 
