@@ -38,63 +38,88 @@
               <div class="mt-2 flex w-full flex-col items-center">
                 <fieldset class="fieldset w-full">
                   <legend class="fieldset-legend">
-                    <div>Пон</div>
-                    <div class="text-red-500">*</div>
+                    <div>Пол</div>
+                    <div class="text-red-500"></div>
                   </legend>
-                  <input
-                    type="text"
-                    class="input input-natural border"
-                    placeholder="Мужской..."
-                  />
+                  <div class="text-xl">
+                    {{ userStore.sex == 'male' ? 'Мужчина' : 'Женщина' }}
+                  </div>
                 </fieldset>
 
                 <fieldset class="fieldset w-full">
                   <legend class="fieldset-legend">
                     <div>Рост</div>
-                    <div class="text-red-500">*</div>
+                    <div class="text-red-500"></div>
                   </legend>
-                  <input
-                    type="text"
-                    class="input input-natural border"
-                    placeholder="190см..."
-                  />
+                  <div class="text-xl">{{ userStore.height }} см</div>
                 </fieldset>
 
                 <fieldset class="fieldset w-full">
                   <legend class="fieldset-legend">
                     <div>Вес</div>
-                    <div class="text-red-500">*</div>
+                    <div class="text-red-500"></div>
                   </legend>
-                  <input
-                    type="number"
-                    class="input input-natural border"
-                    placeholder="72 кг..."
-                  />
+                  <div class="text-xl">{{ userStore.weight }} кг</div>
                 </fieldset>
 
                 <fieldset class="fieldset w-full">
                   <legend class="fieldset-legend">
                     <div>Возраст</div>
-                    <div class="text-red-500">*</div>
+                    <div class="text-red-500"></div>
                   </legend>
-                  <input
-                    type="number"
-                    class="input input-natural border"
-                    placeholder="22 года..."
-                  />
+                  <div class="text-xl">{{ userStore.age }} лет</div>
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
+                  <legend class="fieldset-legend">
+                    <div>Целевой вес</div>
+                    <div class="text-red-500"></div>
+                  </legend>
+                  <div class="text-xl">{{ userStore.targetWeight }} кг</div>
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
+                  <legend class="fieldset-legend">
+                    <div>Дополнительная информация</div>
+                    <div class="text-red-500"></div>
+                  </legend>
+                  <div class="text-xl">{{ userStore.other }}</div>
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
+                  <legend class="fieldset-legend">
+                    <div>Спортивный инвентарь</div>
+                    <div class="text-red-500"></div>
+                  </legend>
+                  <div class="text-xl">
+                    {{ equipment[userStore.equipment] }}
+                  </div>
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
+                  <legend class="fieldset-legend">
+                    <div>Текущая форма</div>
+                    <div class="text-red-500"></div>
+                  </legend>
+                  <div class="text-xl">
+                    {{ equipment[userStore.equipment] }}
+                  </div>
                 </fieldset>
 
                 <fieldset class="fieldset w-full">
                   <legend class="fieldset-legend">
                     <div>Цель тренировки</div>
-                    <div class="text-red-500">*</div>
+                    <div class="text-red-500"></div>
                   </legend>
-                  <select class="select border">
-                    <option disabled selected>Выбрать...</option>
-                    <option>Масса</option>
-                    <option>Всё равно</option>
-                    <option>Сброс</option>
-                  </select>
+                  <div class="text-xl">{{ type[userStore.type] }}</div>
+                </fieldset>
+
+                <fieldset class="fieldset w-full">
+                  <legend class="fieldset-legend">
+                    <div>Форма</div>
+                    <div class="text-red-500"></div>
+                  </legend>
+                  <div class="text-xl">{{ form[userStore.form] }}</div>
                 </fieldset>
               </div>
 
@@ -104,7 +129,7 @@
                   class="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   @click="closeModal"
                 >
-                  Обновить
+                  Закрыть
                 </button>
               </div>
             </DialogPanel>
@@ -117,6 +142,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useUserData } from '~/modules/start/store/user'
 import {
   TransitionRoot,
   TransitionChild,
@@ -125,6 +151,7 @@ import {
   DialogTitle
 } from '@headlessui/vue'
 
+const userStore = useUserData()
 const isOpen = defineModel()
 
 function closeModal() {
@@ -133,6 +160,27 @@ function closeModal() {
 function openModal() {
   isOpen.value = true
 }
+
+const type = {
+  strength: 'Увеличение массы',
+  fit: 'Поддержка формы',
+  thick: 'Похудение'
+}
+
+const equipment = {
+  minimal: 'Минимальный',
+  home: 'Домаший зал',
+  gym: 'Упражняюсь в зале'
+}
+
+const form = {
+  nothing: 'Дрищ',
+  walk: 'Иногда хожу',
+  fit: 'Поддерживал форму',
+  active: 'Активно занимаюсь спортом'
+}
+
+console.log(type['stgength'])
 </script>
 
 <style scoped>
