@@ -10,10 +10,10 @@
       class="scrollbar-hide flex w-[500px] overflow-x-auto whitespace-nowrap"
     >
       <FoodCard
-        v-for="i in 12"
+        v-for="food in props.food"
+        :name="food.name"
+        :value="food.gram"
         class="mr-2"
-        name="Яйца"
-        value="4 шт"
       ></FoodCard>
     </div>
 
@@ -30,6 +30,14 @@ import { MoveLeft } from 'lucide-vue-next'
 import { MoveRight } from 'lucide-vue-next'
 import FoodCard from '../components/FoodCard.vue'
 import { ref, onMounted } from 'vue'
+
+const props = defineProps({
+  food: {
+    type: Array,
+    default: () => [],
+  },
+})
+
 const foodCardContainer = ref<HTMLDivElement | null>(null)
 const scrollLeft = () => {
   if (foodCardContainer.value) {

@@ -1,84 +1,44 @@
 <template>
   <TransitionRoot appear :show="isOpen" as="template">
     <Dialog as="div" @close="closeModal" class="relative z-10">
-      <TransitionChild
-        as="template"
-        enter="duration-300 ease-out"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="duration-200 ease-in"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
+      <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0" enter-to="opacity-100"
+        leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">
         <div class="fixed inset-0 bg-black/25" />
       </TransitionChild>
 
       <div class="fixed inset-0 overflow-y-auto">
-        <div
-          class="flex min-h-full items-center justify-center p-4 text-center"
-        >
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
+        <div class="flex min-h-full items-center justify-center p-4 text-center">
+          <TransitionChild as="template" enter="duration-300 ease-out" enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100" leave="duration-200 ease-in" leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95">
             <DialogPanel
-              class="max-w-[650px]transform relative h-[800px] w-[650px] overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
-            >
+              class="max-w-[650px]transform relative h-[800px] w-[650px] overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
               <div class="flex items-center justify-between">
-                <DialogTitle
-                  as="h3"
-                  class="text-center text-lg leading-6 font-medium text-gray-900"
-                >
+                <DialogTitle as="h3" class="text-center text-lg leading-6 font-medium text-gray-900">
                   Фитнесс-ассистент
                 </DialogTitle>
-                <X
-                  class="btn-circle cursor-pointer p-3 hover:bg-gray-200"
-                  size="32"
-                  @click="closeModal"
-                />
+                <X class="btn-circle cursor-pointer p-3 hover:bg-gray-200" size="32" @click="closeModal" />
               </div>
               <!-- Юзер пишет сообщение -->
-              <div
-                ref="chatContainer"
-                class="flex max-h-[600px] flex-col-reverse gap-4 overflow-y-auto pr-2"
-              >
-                <div
-                  v-for="(msg, index) in [...chat].reverse()"
-                  :key="index"
-                  role="alert"
-                  :class="[
-                    'alert',
-                    msg.from === 'user'
-                      ? 'bg-[#422AD5] text-[#DBD6FC]'
-                      : 'bg-gray-200'
-                  ]"
-                >
+              <div ref="chatContainer" class="flex max-h-[600px] flex-col-reverse gap-4 overflow-y-auto pr-2">
+                <div v-for="(msg, index) in [...chat].reverse()" :key="index" role="alert" :class="[
+                  'alert',
+                  msg.from === 'user'
+                    ? 'bg-[#422AD5] text-[#DBD6FC]'
+                    : 'bg-gray-200'
+                ]">
                   <span>{{ msg.text }}</span>
                 </div>
               </div>
 
               <div class="absolute bottom-4 flex gap-2">
-                <textarea
-                  v-model="message"
-                  class="textarea w-[500px] resize-none border border-[#422AD5]"
-                  placeholder="Введите сообщение..."
-                  @keydown.enter.prevent="sendMessage"
-                ></textarea>
+                <textarea v-model="message" class="textarea w-[500px] resize-none border border-[#422AD5]"
+                  placeholder="Введите сообщение..." @keydown.enter.prevent="sendMessage"></textarea>
 
                 <div
                   class="mb-auto flex cursor-pointer flex-row rounded-2xl bg-[#422AD5] p-2 transition duration-300 hover:rounded-2xl hover:bg-blue-600"
-                  @click="sendMessage"
-                >
-                  <SendHorizontal
-                    stroke-width="1.5"
-                    color="#fff"
-                    class="h-8 w-8"
-                  />
+                  @click="sendMessage">
+                  <SendHorizontal stroke-width="1.5" color="#fff" class="h-8 w-8" />
                 </div>
               </div>
             </DialogPanel>
@@ -92,6 +52,7 @@
 <script setup>
 import { ref } from 'vue'
 import { X, SendHorizontal } from 'lucide-vue-next'
+import { useChat } from '../composables/useChat'
 import {
   TransitionRoot,
   TransitionChild,
@@ -100,31 +61,40 @@ import {
   DialogTitle
 } from '@headlessui/vue'
 
+const { UseSendMessage, UseGetHistory } = useChat()
 const isOpen = defineModel()
 
 const message = ref('')
 const chat = ref([
-  { text: 'Слышь, братан, а ты мне картофан то убери...', from: 'user' },
-  { text: 'Брат, да не вопрос, запоминай: сковорода...', from: 'gpt' }
+  { text: 'Привет, я твой фитнесс помощник, задай мне вопрос и я отвечу!', from: 'gpt' },
 ])
+
+async function getChatHistory() {
+  const response = await UseGetHistory()
+  console.log(response.response.messages.map(msg => new Object({ text: msg.context, from: msg.isGPT ? 'gpt' : 'user' })))
+  chat.value = response.response.messages.map(msg => new Object({ text: msg.context, from: msg.isGPT ? 'gpt' : 'user' }))
+}
+getChatHistory()
 
 function closeModal() {
   isOpen.value = false
 }
 
-function sendMessage() {
+async function sendMessage() {
+
   if (!message.value.trim()) return
   chat.value.push({ text: message.value, from: 'user' })
 
-  // Симуляция ответа от GPT (можно позже заменить на реальный запрос)
-  setTimeout(() => {
-    chat.value.push({
-      text: 'Принято, брат! Без картофана всё будет чётко.',
-      from: 'gpt'
-    })
-  }, 1500)
-
+  // Симуляция ответа от GPT (можно позже заменить на реальный запрос)э
+  const userMessage = message.value
   message.value = ''
+  const response = await UseSendMessage(userMessage)
+
+  console.log(response)
+  chat.value.push({
+    text: response.response.message.context,
+    from: 'gpt'
+  })
 }
 </script>
 
@@ -132,6 +102,7 @@ function sendMessage() {
 input {
   width: 100%;
 }
+
 select {
   width: 100%;
 }
