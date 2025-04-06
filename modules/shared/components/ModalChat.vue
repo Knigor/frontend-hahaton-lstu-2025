@@ -65,14 +65,14 @@ const { UseSendMessage, UseGetHistory } = useChat()
 const isOpen = defineModel()
 
 const message = ref('')
-const chat = ref([
-  { text: 'Привет, я твой фитнесс помощник, задай мне вопрос и я отвечу!', from: 'gpt' },
-])
+const chat = ref([])
 
 async function getChatHistory() {
   const response = await UseGetHistory()
-  console.log(response.response.messages.map(msg => new Object({ text: msg.context, from: msg.isGPT ? 'gpt' : 'user' })))
   chat.value = response.response.messages.map(msg => new Object({ text: msg.context, from: msg.isGPT ? 'gpt' : 'user' }))
+  if (chat.value == []) {
+    chat.value.push({ text: 'Привет! Я ваш фитнес-ассистент. Как я могу помочь?', from: 'gpt' })
+  }
 }
 getChatHistory()
 
