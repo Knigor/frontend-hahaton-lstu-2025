@@ -98,16 +98,6 @@
 
                 <fieldset class="fieldset w-full">
                   <legend class="fieldset-legend">
-                    <div>Текущая форма</div>
-                    <div class="text-red-500"></div>
-                  </legend>
-                  <div class="text-xl">
-                    {{ form[userStore.form] }}
-                  </div>
-                </fieldset>
-
-                <fieldset class="fieldset w-full">
-                  <legend class="fieldset-legend">
                     <div>Цель тренировки</div>
                     <div class="text-red-500"></div>
                   </legend>
