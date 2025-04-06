@@ -29,6 +29,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if (authStore.accessToken && to.path !== '/start-second') {
       const { response, success, error } = await getProfile()
 
+      if (
+        !response.filled_in_data &&
+        response.email.slice(response.email.indexOf('@') + 1) === 'yandex.ru'
+      ) {
+        return navigateTo('/start')
+      }
+
       if (response.filled_in_data) {
         navigateTo('/')
       } else {
@@ -41,6 +48,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
         userDataStore.targetWeight = response.desired_weight
         userDataStore.type = response.target
         userDataStore.other = response.details
+
+        navigateTo('/start')
       }
 
       if (!success) {
