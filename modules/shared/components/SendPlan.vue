@@ -55,6 +55,7 @@ const fileName = ref('')
 const { getPlan } = usePlan()
 const data = ref(null)
 async function getPlanData() {
+  closeModal()
   data.value = await getPlan()
   data.value = data.value.response.week_plan
   downloadPlan(data.value, fileName.value)
