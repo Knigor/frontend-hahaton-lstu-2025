@@ -102,7 +102,7 @@
                     <div class="text-red-500"></div>
                   </legend>
                   <div class="text-xl">
-                    {{ equipment[userStore.equipment] }}
+                    {{ form[userStore.form] }}
                   </div>
                 </fieldset>
 
