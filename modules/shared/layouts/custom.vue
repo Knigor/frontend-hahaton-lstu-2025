@@ -59,7 +59,7 @@ const handleLogOut = async () => {
       >
         <UserPen stroke-width="1.5" color="#422AD5" class="h-8 w-8" />
       </div>
-
+      <ModalStart v-model="openModal"></ModalStart>
       <div
         class="tooltip tooltip-right cursor-pointer rounded-2xl p-2 transition duration-300 hover:bg-gray-200"
         data-tip="Скорректировать план"
