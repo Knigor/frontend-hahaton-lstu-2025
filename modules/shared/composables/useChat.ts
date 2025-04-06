@@ -16,5 +16,16 @@ export const useChat = () => {
       return { success: false, error }
     }
   }
-  return { UseSendMessage }
+
+  async function UseGetHistory() : Promise<{ response?: any; success: boolean; error?: any }> {
+    try {
+      const result = await $protectedApi('fitness/chat', {
+        method: 'GET',
+      })
+      return { response : result, success: true }
+    } catch (error) {
+      return { success: false, error }
+    }
+  }
+  return { UseSendMessage, UseGetHistory }
 }

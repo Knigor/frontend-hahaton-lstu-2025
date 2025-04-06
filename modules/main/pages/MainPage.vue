@@ -52,7 +52,7 @@ function nextDay() {
 <template>
   <div class="flex w-full flex-col items-center  gap-4 p-[32px] text-center">
     <p class="f text-[40px] font-bold">План тренировок</p>
-    <div class="flex flex-row items-center  gap-4">
+    <div class="flex flex-row w-full items-center justify-between gap-4">
       <div @click="prevDay()"
         class="h-[200px] flex items-center justify-center rounded-2xl border-[1px] border-[#D1D1D1] bg-[#F0F0F0] p-3 hover:bg-gray-200">
         <ArrowBigLeft></ArrowBigLeft>

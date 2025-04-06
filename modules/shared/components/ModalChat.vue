@@ -53,8 +53,6 @@
 import { ref } from 'vue'
 import { X, SendHorizontal } from 'lucide-vue-next'
 import { useChat } from '../composables/useChat'
-const { UseSendMessage } = useChat()
-
 import {
   TransitionRoot,
   TransitionChild,
@@ -63,31 +61,40 @@ import {
   DialogTitle
 } from '@headlessui/vue'
 
+const { UseSendMessage, UseGetHistory } = useChat()
 const isOpen = defineModel()
 
 const message = ref('')
 const chat = ref([
-  { text: 'Слышь, братан, а ты мне картофан то убери...', from: 'user' },
-  { text: 'Брат, да не вопрос, запоминай: сковорода...', from: 'gpt' }
+  { text: 'Привет, я твой фитнесс помощник, задай мне вопрос и я отвечу!', from: 'gpt' },
 ])
+
+async function getChatHistory() {
+  const response = await UseGetHistory()
+  console.log(response.response.messages.map(msg => new Object({ text: msg.context, from: msg.isGPT ? 'gpt' : 'user' })))
+  chat.value = response.response.messages.map(msg => new Object({ text: msg.context, from: msg.isGPT ? 'gpt' : 'user' }))
+}
+getChatHistory()
 
 function closeModal() {
   isOpen.value = false
 }
 
-function sendMessage() {
+async function sendMessage() {
+
   if (!message.value.trim()) return
   chat.value.push({ text: message.value, from: 'user' })
 
-  // Симуляция ответа от GPT (можно позже заменить на реальный запрос)
-  setTimeout(() => {
-    chat.value.push({
-      text: 'Принято, брат! Без картофана всё будет чётко.',
-      from: 'gpt'
-    })
-  }, 1500)
-
+  // Симуляция ответа от GPT (можно позже заменить на реальный запрос)э
+  const userMessage = message.value
   message.value = ''
+  const response = await UseSendMessage(userMessage)
+
+  console.log(response)
+  chat.value.push({
+    text: response.response.message.context,
+    from: 'gpt'
+  })
 }
 </script>
 
