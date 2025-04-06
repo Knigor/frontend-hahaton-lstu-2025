@@ -82,6 +82,8 @@ const onSubmit = async () => {
     const response = await onLogin(email.value, password.value)
 
     if (response.success) {
+      console.log(response.profile)
+
       if (localStorage.getItem('firstLogin')) {
         return navigateTo('/')
       } else {
