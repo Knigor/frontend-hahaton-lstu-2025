@@ -13,38 +13,38 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   const publicRoutes = ['/authorization', '/register']
 
-  // получаем профиль
-
-  if (authStore.accessToken && to.path !== '/start-second') {
-    const { response, success, error } = await getProfile()
-
-    if (response.filled_in_data) {
-      userDataStore.age = response.age
-      userDataStore.height = response.height
-      userDataStore.weight = response.weight
-      userDataStore.sex = response.gender
-      userDataStore.form = response.level_of_training
-      userDataStore.equipment = response.inventory
-      userDataStore.targetWeight = response.desired_weight
-      userDataStore.type = response.target
-      userDataStore.other = response.details
-    } else {
-      navigateTo('/')
-    }
-
-    if (!success) {
-      return { success: false, error }
-    }
-  }
-
   if (authStore.accessToken === null) {
     const response = await refreshToken()
 
-    if (response.success) {
-      if (localStorage.getItem('firstLogin')) {
-        return navigateTo('/')
+    // if (response.success) {
+    //   if (localStorage.getItem('firstLogin')) {
+    //     return navigateTo('/')
+    //   } else {
+    //     return navigateTo('/start')
+    //   }
+    // }
+
+    // получаем профиль
+
+    if (authStore.accessToken && to.path !== '/start-second') {
+      const { response, success, error } = await getProfile()
+
+      if (response.filled_in_data) {
+        navigateTo('/')
       } else {
-        return navigateTo('/start')
+        userDataStore.age = response.age
+        userDataStore.height = response.height
+        userDataStore.weight = response.weight
+        userDataStore.sex = response.gender
+        userDataStore.form = response.level_of_training
+        userDataStore.equipment = response.inventory
+        userDataStore.targetWeight = response.desired_weight
+        userDataStore.type = response.target
+        userDataStore.other = response.details
+      }
+
+      if (!success) {
+        return { success: false, error }
       }
     }
 

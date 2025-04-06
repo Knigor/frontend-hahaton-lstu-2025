@@ -31,8 +31,9 @@ export const useAuth = () => {
         userDataStore.targetWeight = response.desired_weight
         userDataStore.type = response.target
         userDataStore.other = response.details
+      } else {
+        navigateTo('/')
       }
-
       if (!success) {
         return { success: false, error }
       }
