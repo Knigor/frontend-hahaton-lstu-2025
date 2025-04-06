@@ -30,10 +30,17 @@ export default defineNuxtRouteMiddleware(async (to) => {
       const { response, success, error } = await getProfile()
 
       if (
-        !response.filled_in_data &&
+        response.filled_in_data === false &&
         response.email.slice(response.email.indexOf('@') + 1) === 'yandex.ru'
       ) {
         return navigateTo('/start')
+      }
+
+      if (
+        response.filled_in_data === true &&
+        response.email.slice(response.email.indexOf('@') + 1) === 'yandex.ru'
+      ) {
+        return navigateTo('/')
       }
 
       if (response.filled_in_data) {
