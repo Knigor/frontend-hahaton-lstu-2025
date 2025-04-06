@@ -116,7 +116,7 @@
 
                 <fieldset class="fieldset w-full">
                   <legend class="fieldset-legend">
-                    <div>Форма</div>
+                    <div>Текущая форма</div>
                     <div class="text-red-500"></div>
                   </legend>
                   <div class="text-xl">{{ form[userStore.form] }}</div>
